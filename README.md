@@ -1,6 +1,6 @@
 # Migjorn
 
-Migjorn is a Rust-first toolkit for reading, validating, inspecting, and transforming MCNP input models, with both a native CLI and Python bindings. The project is designed for workflows where performance, reproducibility, and programmatic access all matter: fast parsing in Rust, command-line automation for batch processing, and a Python API for analysis notebooks and scripts.
+Migjorn is a toolkit for reading, validating, inspecting, and transforming MCNP input models, with both a native CLI and Python bindings. The project is designed for workflows where performance, reproducibility, and programmatic access all matter: fast parsing in Rust, command-line automation for batch processing, and a Python API for analysis notebooks and scripts.
 
 ## What Migjorn Provides
 
@@ -16,13 +16,105 @@ Migjorn focuses on the parts of MCNP model handling that are commonly needed in 
 
 ### Rust CLI (crates.io)
 
-	cargo install migjorn
+```bash
+cargo install migjorn
+```
 
 ### Python package (PyPI)
 
-	pip install migjorn
+```bash
+pip install migjorn
+```
 
 After installation, both `import migjorn` and the `migjorn` command are available.
+
+
+## Python API Quick Start
+
+### Loading and inspecting a model
+
+```python
+from migjorn import Model
+
+model = Model.from_file("input.i")
+print(model.title)
+print(len(model.cells), len(model.surfaces), len(model.materials))
+```
+
+### Renumbering from Python
+
+```python
+model.renumber_cells(100, range=(1, 999))
+model.renumber_surfaces(-50)
+model.write_to_file("renumbered.i")
+```
+
+### Running validation checks
+
+```python
+try:
+    model.validation_checks()
+    print("Model is valid")
+except ValueError as e:
+    print("Validation report:")
+    print(e)
+```
+
+## CLI Usage
+
+General help:
+
+```bash
+migjorn --help
+```
+
+### 1) info
+
+Purpose: parse an MCNP file and print model statistics.
+
+```bash
+migjorn info INPUT_FILE
+```
+
+Output includes counts of cells, surfaces, universes, and materials, followed by a validation summary.
+
+### 2) parsing-check
+
+Purpose: verify that the file parses cleanly.
+
+```bash
+migjorn parsing-check INPUT_FILE
+```
+
+Prints `All cards parsed successfully.` on success, or an error to stderr with a non-zero exit code on failure.
+
+### 3) renumber
+
+Purpose: renumber one or more ID domains and write a new output model.
+
+```bash
+migjorn renumber INPUT_FILE OUTPUT_FILE [OPTIONS]
+```
+
+Main options:
+
+- `--cells OFFSET` with optional `--cell-range FROM TO`
+- `--surfaces OFFSET` with optional `--surface-range FROM TO`
+- `--materials OFFSET` with optional `--material-range FROM TO`
+- `--transformations OFFSET` with optional `--transformation-range FROM TO`
+- `--universes OFFSET` with optional `--universe-range FROM TO`
+
+Notes:
+
+- Offsets can be negative.
+- Range bounds are inclusive.
+- If no range is provided for a selected domain, the offset applies to all IDs in that domain.
+
+Example:
+
+```bash
+migjorn renumber input.i output.i --cells 1000 --cell-range 1 999 --surfaces -200
+```
 
 ## Repository Layout
 
@@ -56,7 +148,9 @@ Migjorn uses a two-layer design:
 
 ### Rust CLI
 
-	cargo build --release
+```bash
+cargo build --release
+```
 
 The executable is at `target/release/migjorn`.
 
@@ -64,88 +158,16 @@ The executable is at `target/release/migjorn`.
 
 This project uses [maturin](https://www.maturin.rs/) and PyO3 (ABI3, Python 3.8+ compatibility target).
 
-	pip install maturin
-	maturin develop
+```bash
+pip install maturin
+maturin develop
+```
 
 Wheel build:
 
-	maturin build --release
-
-## CLI Usage
-
-General help:
-
-	migjorn --help
-
-### 1) info
-
-Purpose: parse an MCNP file and print model statistics.
-
-	migjorn info INPUT_FILE
-
-Output includes counts of cells, surfaces, universes, and materials, followed by a validation summary.
-
-### 2) parsing-check
-
-Purpose: verify that the file parses cleanly.
-
-	migjorn parsing-check INPUT_FILE
-
-Prints `All cards parsed successfully.` on success, or an error to stderr with a non-zero exit code on failure.
-
-### 3) renumber
-
-Purpose: renumber one or more ID domains and write a new output model.
-
-	migjorn renumber INPUT_FILE OUTPUT_FILE [OPTIONS]
-
-Main options:
-
-- `--cells OFFSET` with optional `--cell-range FROM TO`
-- `--surfaces OFFSET` with optional `--surface-range FROM TO`
-- `--materials OFFSET` with optional `--material-range FROM TO`
-- `--transformations OFFSET` with optional `--transformation-range FROM TO`
-- `--universes OFFSET` with optional `--universe-range FROM TO`
-
-Notes:
-
-- Offsets can be negative.
-- Range bounds are inclusive.
-- If no range is provided for a selected domain, the offset applies to all IDs in that domain.
-
-Example:
-
-	migjorn renumber input.i output.i --cells 1000 --cell-range 1 999 --surfaces -200
-
-## Python API Quick Start
-
-### Loading and inspecting a model
-
-	from migjorn import Model
-
-	m = Model.from_file("input.i")
-	print(m.title)
-	print(len(m.cells), len(m.surfaces), len(m.materials))
-
-### Running validation checks
-
-	try:
-		m.validation_checks()
-		print("Model is valid")
-	except ValueError as e:
-		print("Validation report:")
-		print(e)
-
-### Renumbering from Python
-
-	m.renumber_cells(100, range=(1, 999))
-	m.renumber_surfaces(-50)
-	m.write_to_file("renumbered.i")
-
-### Calling the CLI programmatically
-
-	from migjorn import run
-	code = run(["migjorn", "info", "input.i"])
+```bash
+maturin build --release
+```
 
 ## Error Handling and Exit Codes
 
@@ -159,8 +181,10 @@ Python API raises exceptions (`IOError`, `ValueError`, etc.) instead of exit cod
 
 ## Testing
 
-	cargo test --workspace
-	pytest
+```bash
+cargo test --workspace
+pytest
+```
 
 ## Typical Workflow
 
