@@ -1,5 +1,9 @@
 # Migjorn
 
+<p align="center">
+  <img src="assets/logo.png" alt="Project Logo" width="200">
+</p>
+
 Migjorn is a toolkit for reading, validating, inspecting, and transforming MCNP input models, with both a native CLI and Python bindings. The project is designed for workflows where performance, reproducibility, and programmatic access all matter: fast parsing in Rust, command-line automation for batch processing, and a Python API for analysis notebooks and scripts.
 
 ## What Migjorn Provides
