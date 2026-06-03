@@ -134,10 +134,10 @@ mod tests {
 
     #[test]
     fn test_fast_float_parsing() {
-        let bytes = b"3.14159";
+        let bytes = b"1.22223";
         let mut pos = 0;
         let result = parse_f64_fast(bytes, &mut pos).unwrap();
-        assert!((result - 3.14159).abs() < 1e-10);
+        assert!((result - 1.22223).abs() < 1e-10);
 
         let bytes = b"-2.7e-3";
         let mut pos = 0;

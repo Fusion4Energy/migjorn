@@ -1,4 +1,4 @@
-///! Use with: `cargo run -r --example bench`
+//! Use with: `cargo run -r --example bench`
 use std::time;
 
 use migjorn::Model;

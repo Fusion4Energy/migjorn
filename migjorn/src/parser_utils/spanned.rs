@@ -131,10 +131,10 @@ mod tests {
 
     #[test]
     fn test_parse_spanned_f64() {
-        let bytes = b"3.14159";
+        let bytes = b"3.22223";
         let mut pos = 0;
         let result = parse_spanned_f64(bytes, &mut pos).unwrap();
-        assert!((result.value - 3.14159).abs() < 1e-10);
+        assert!((result.value - 3.22223).abs() < 1e-10);
         assert_eq!(result.span, Span(0, 7));
 
         let bytes = b"C comment\n    -2.7e-3 $ other comment";

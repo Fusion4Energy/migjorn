@@ -122,7 +122,7 @@ mod tests {
 
     fn mock_model() -> Model {
         Model::from_text(
-            &PathBuf::new(),
+            PathBuf::new(),
             "Mock model title
 10 101 -1.23 -1 #100 IMP:N=1 FILL=1 (67)
 20 101 -1.23  2 #200 IMP:N=1 FILL=1 (67)
@@ -298,7 +298,7 @@ TR67 2 2 2
     #[test]
     fn universe_numbers_in_range_are_renumbered() {
         let mut model = Model::from_text(
-            &PathBuf::new(),
+            PathBuf::new(),
             "Mock model title
 10 101 -1.23 -1 IMP:N=1 FILL=101 (67)
 20 101 -1.23  2 IMP:N=1 U=101 (67)
