@@ -83,15 +83,15 @@ migjorn info INPUT_FILE
 
 Output includes counts of cells, surfaces, universes, and materials, followed by a validation summary.
 
-### 2) parsing-check
+### 2) validate
 
-Purpose: verify that the file parses cleanly.
+Purpose: verify that the file does not contain errors like duplicate or missing card IDs.
 
 ```bash
-migjorn parsing-check INPUT_FILE
+migjorn validate INPUT_FILE
 ```
 
-Prints `All cards parsed successfully.` on success, or an error to stderr with a non-zero exit code on failure.
+Prints `Validation passed.` on success, or an error to stderr with a non-zero exit code on failure.
 
 ### 3) renumber
 
@@ -142,7 +142,7 @@ Migjorn uses a two-layer design:
    - Defines card and model types: `Model`, `CellCard`, `SurfaceCard`, `MaterialCard`, `TransformCard`, `TallyCard`, and `UnparsedCard`.
    - Handles parsing, error reporting, validation checks, and serialization back to MCNP-like text.
    - Provides renumbering operations for cells, surfaces, materials, transformations, and universes.
-   - Exposes CLI commands (`info`, `parsing-check`, `renumber`) via `migjorn::cli`.
+   - Exposes CLI commands (`info`, `validate`, `renumber`) via `migjorn::cli`.
 
 2. **Python binding layer (`migjorn-py` + `python/migjorn`)**
    - Exposes Rust classes and functions through a Python-friendly API.
@@ -190,14 +190,6 @@ Python API raises exceptions (`IOError`, `ValueError`, etc.) instead of exit cod
 cargo test --workspace
 pytest
 ```
-
-## Typical Workflow
-
-1. Run `parsing-check` to fail fast on malformed files.
-2. Use `info` to get quick structural stats and a validation summary.
-3. Apply `renumber` operations to avoid ID collisions across merged models.
-4. Re-run `info` or validation checks on the output.
-5. Use the Python API for custom transformations and reporting when needed.
 
 ## Scope and Current Status
 

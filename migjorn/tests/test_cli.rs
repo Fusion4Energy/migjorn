@@ -24,7 +24,7 @@ fn info_returns_0_for_valid_file() {
 fn check_returns_0_for_valid_file() {
     let code = run(args(&[
         "migjorn",
-        "parsing-check",
+        "validate",
         input_path().to_str().unwrap(),
     ]));
     assert_eq!(code, 0);
@@ -34,7 +34,7 @@ fn check_returns_0_for_valid_file() {
 fn check_returns_1_for_missing_file() {
     let code = run(args(&[
         "migjorn",
-        "parsing-check",
+        "validate",
         "/dev/null/does_not_exist.mcnp",
     ]));
     assert_eq!(code, 1);

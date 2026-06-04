@@ -2,8 +2,8 @@ use clap::{Parser, Subcommand};
 
 pub mod commands {
     pub mod info;
-    pub mod parsing_check;
     pub mod renumber;
+    pub mod validate;
 }
 mod utils;
 
@@ -18,7 +18,7 @@ struct Cli {
 enum Command {
     Info(commands::info::InfoArgs),
     Renumber(commands::renumber::RenumberArgs),
-    ParsingCheck(commands::parsing_check::CheckArgs),
+    Validate(commands::validate::CheckArgs),
 }
 
 pub fn run(args: impl IntoIterator<Item = String>) -> i32 {
@@ -33,7 +33,7 @@ pub fn run(args: impl IntoIterator<Item = String>) -> i32 {
     match cli.command {
         Command::Info(args) => commands::info::run(&args),
         Command::Renumber(args) => commands::renumber::run(&args),
-        Command::ParsingCheck(args) => commands::parsing_check::run(&args),
+        Command::Validate(args) => commands::validate::run(&args),
     }
 }
 
