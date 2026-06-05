@@ -15,11 +15,11 @@ def test_cli_info_missing_file_returns_1():
 
 
 def test_cli_parsing_check_valid_file():
-    assert run(["migjorn", "parsing-check", str(TRACKED)]) == 0
+    assert run(["migjorn", "validate", str(TRACKED)]) == 0
 
 
 def test_cli_parsing_check_missing_file_returns_1():
-    assert run(["migjorn", "parsing-check", "/dev/null/does_not_exist.mcnp"]) == 1
+    assert run(["migjorn", "validate", "/dev/null/does_not_exist.mcnp"]) == 1
 
 
 def test_cli_renumber_cells():
